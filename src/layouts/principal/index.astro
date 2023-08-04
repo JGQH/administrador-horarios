@@ -1,4 +1,7 @@
 --- 
+import '@fontsource-variable/inter'
+import { Navbar } from '@Componentes';
+
 interface Props {
 	título: string;
 }
@@ -16,6 +19,15 @@ const { título } = Astro.props;
 		<title>Creador de Horarios - {título}</title>
 	</head>
 	<body>
-		<slot />
+		<Navbar />
+		<main>
+			<slot >
+		</main>
 	</body>
 </html>
+
+<style>
+	body {
+		font-family: 'Inter Variable';
+	}
+</style>
