@@ -11,3 +11,10 @@
         (e: 'click'): void
     }>()
 </script>
+
+<style scoped>
+    img {
+        height: 1rem;
+        width: 1rem;
+    }
+</style>

@@ -2,7 +2,7 @@
     <div>
         <div v-for="clase in clases">
             <div v-if="idSeleccionada===clase.id">
-                <input class="border border-blue" v-model="nombreNuevo" @focusout="renombrarClase(clase.id)" />
+                <input class="border border-blue" v-model="nombreNuevo" @focusout="renombrarClase(clase.id)" autofocus />
             </div>
             <div class="nombrador" v-else>
                 <Editor :texto="clase.nombre" @selección="seleccionar(clase.id, clase.nombre)" @eliminación="eliminarClase(clase.id)" />
@@ -10,15 +10,32 @@
             <div class="pl-5">
                 <div v-for="grupo in clase.grupos">
                     <div v-if="idSeleccionada===grupo.id">
-                        <input class="border border-blue" v-model="nombreNuevo" @focusout="renombrarGrupo(grupo.id)" />
+                        <input class="border border-blue" v-model="nombreNuevo" @focusout="renombrarGrupo(grupo.id)" autofocus />
                     </div>
                     <div class="nombrador" v-else>
-                        <Editor :texto="`${grupo.nombre} (${duraciónGrupo(grupo)} horas)`" @selección="seleccionar(grupo.id, grupo.nombre)" @eliminación="eliminarGrupo(grupo.id)" />
+                        <Editor :texto="grupo.nombre" @selección="seleccionar(grupo.id, grupo.nombre)" @eliminación="eliminarGrupo(grupo.id)" />
                     </div>
                     <div class="pl-5">
                         <div v-for="bloque in grupo.bloques">
-                            <div class="nombrador" v-if="idSeleccionada!==bloque.id">
-                                <Editor :texto="`${bloque.día}: ${bloque.inicio} - ${bloque.final} (${duraciónBloque(bloque)} horas)`" @eliminación="eliminarBloque(bloque.id)" />
+                            <div v-if="idSeleccionada===bloque.id">
+                                <select class="inline" @change="reformarBloque('día', +($event.target as HTMLSelectElement).value)">
+                                    <option disabled value="">Día</option>
+                                    <option v-for="(día, índiceDía) in díasSemana" :value="índiceDía" :selected="índiceDía===bloque.día">{{ día }}</option>
+                                </select>,
+                                <select class="inline" @change="reformarBloque('inicio', +($event.target as HTMLSelectElement).value)">
+                                    <option disabled value="">Inicio</option>
+                                    <option v-for="(inicio, índiceInicio) in horasInicio" :value="índiceInicio" :selected="índiceInicio===bloque.inicio">{{ inicio }}</option>
+                                </select> -
+                                <select class="inline" @change="reformarBloque('final', +($event.target as HTMLSelectElement).value)">
+                                    <option disabled value="">Final</option>
+                                    <option v-for="(final, índiceFinal) in horasFinal" :value="índiceFinal" :selected="índiceFinal===bloque.final">{{ final }}</option>
+                                </select>
+                                <button @click="reprogramarBloque(bloque.id)">
+                                    Aceptar
+                                </button>
+                            </div>
+                            <div class="nombrador" v-else>
+                                <Editor :texto="formatoBloque(bloque)" @selección="seleccionar(bloque.id, JSON.stringify(bloque))" @eliminación="eliminarBloque(bloque.id)" />
                             </div>
                         </div>
                         <Agregador @click="agregarBloque(grupo.id)" />
@@ -32,6 +49,7 @@
 </template>
 
 <script setup lang="ts">
+    import {  díasSemana, horasInicio, horasFinal} from '@Librería/organizador'
     import usarLocalStorage from '@Librería/usarLocalStorage';
     import { default as Editor } from './editor.vue'
     import { default as Agregador } from './agregador.vue'
@@ -43,18 +61,26 @@
     
     const clases = usarLocalStorage<Clase[]>("clases", [])
 
-    // Duración de los cursos
-    function duraciónBloque(bloque: Bloque): number {
-        return bloque.final - bloque.inicio + 1
-    }
-
-    function duraciónGrupo(grupo: Grupo): number {
-        return grupo.bloques.map(duraciónBloque).reduce((a, b) => a + b, 0)
-    }
-
+    // Utilidades
     function seleccionar(id: string, nombre: string) {
         idSeleccionada.value = id
         nombreNuevo.value = nombre
+    }
+
+    function formatoBloque(bloque: Bloque): string {
+        return `${díasSemana[bloque.día]}, ${horasInicio[bloque.inicio]} - ${horasFinal[bloque.final]} (${duraciónBloque(bloque)} horas)`
+    }
+
+    function reformarBloque<T extends keyof Bloque>(propiedad: T, nuevoValor: Bloque[T]) {
+        const bloque = JSON.parse(nombreNuevo.value) as Bloque
+        bloque[propiedad] = nuevoValor
+
+        nombreNuevo.value = JSON.stringify(bloque)
+    }
+    
+    // Duración de los cursos
+    function duraciónBloque(bloque: Bloque): number {
+        return bloque.final - bloque.inicio + 1
     }
 
     // Agregar cursos
@@ -78,11 +104,11 @@
         const índiceClase = clases.value.findIndex(clase => clase.id === id)
 
         // Sabemos que esta función se llama de manera válida, así que no saltamos la comprobación
-        clases.value[índiceClase].grupos.push({ nombre: uuid(), bloques: [], id: uuid() })
+        clases.value[índiceClase].grupos.push({ nombre: "", bloques: [], id: uuid() })
     }
 
     function agregarClase() {
-        clases.value.push({ nombre: uuid(), id: uuid(), grupos: [] })
+        clases.value.push({ nombre: "", id: uuid(), grupos: [] })
     }
 
     // Eliminar cursos
@@ -172,7 +198,7 @@
 </script>
 
 <style>
-    .nombrador:hover img {
+    .nombrador:hover button {
         display: inline-block;
     }
 </style>
