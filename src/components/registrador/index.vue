@@ -1,11 +1,20 @@
 <template>
     <div>
-        <div v-for="clase in clases">
+        <div v-if="clases?.length === 0" class="italic">
+            <p>Agregue sus clases haciendo click en el símbolo "+"</p>
+        </div>
+        <div v-else v-for="clase in clases" :style="{ backgroundColor: clase.color }">
             <div v-if="idSeleccionada===clase.id">
                 <input class="border border-blue" v-model="nombreNuevo" @focusout="renombrarClase(clase.id)" autofocus />
             </div>
-            <div class="nombrador" v-else>
+            <div class="nombrador flex flex-row" v-else>
                 <Editor :texto="clase.nombre" @selección="seleccionar(clase.id, clase.nombre)" @eliminación="eliminarClase(clase.id)" />
+                <button class="hidden">
+                    <label class="cursor-pointer">
+                        <div v-html="paleta"></div>
+                        <input class="hidden" type="color" :value="clase.color" @change="cambiarColor(clase.id, ($event.target as HTMLInputElement).value)" />
+                    </label>
+                </button>
             </div>
             <div class="pl-5">
                 <div v-for="grupo in clase.grupos">
@@ -49,10 +58,11 @@
 </template>
 
 <script setup lang="ts">
+    import paleta from '@Assets/paleta.svg?raw'
     import {  díasSemana, horasInicio, horasFinal} from '@Librería/organizador'
     import usarLocalStorage from '@Librería/usarLocalStorage';
-    import { default as Editor } from './editor.vue'
-    import { default as Agregador } from './agregador.vue'
+    import Editor from './editor.vue'
+    import Agregador from './agregador.vue'
     import { v4 as uuid} from 'uuid'
     import { ref } from "vue";
 
@@ -76,6 +86,12 @@
         bloque[propiedad] = nuevoValor
 
         nombreNuevo.value = JSON.stringify(bloque)
+    }
+
+    function cambiarColor(id: string, color:string) {
+        const índiceClase = clases.value.findIndex(clase => clase.id === id)
+
+        clases.value[índiceClase].color = color
     }
     
     // Duración de los cursos
@@ -108,7 +124,7 @@
     }
 
     function agregarClase() {
-        clases.value.push({ nombre: "", id: uuid(), grupos: [] })
+        clases.value.push({ nombre: "", color: "#FFAAAA", id: uuid(), grupos: [] })
     }
 
     // Eliminar cursos

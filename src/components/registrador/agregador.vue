@@ -1,20 +1,11 @@
 <template>
-    <button @click="emit('click')">
-        <img :src="agregar.src" :width="agregar.width" :height="agregar.height" />
-    </button>
+    <button @click="emit('click')" v-html="agregar"></button>
 </template>
 
 <script setup lang="ts">
-    import agregar from "@Assets/agregar.svg"
+    import agregar from "@Assets/agregar.svg?raw"
 
     const emit = defineEmits<{
         (e: 'click'): void
     }>()
 </script>
-
-<style scoped>
-    img {
-        height: 1rem;
-        width: 1rem;
-    }
-</style>

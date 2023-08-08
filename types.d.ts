@@ -1,5 +1,6 @@
 type Clase = {
     nombre: string,
+    color: string,
     id: string,
     grupos: Grupo[]
 }

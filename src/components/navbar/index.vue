@@ -8,5 +8,5 @@
 </template>
 
 <script setup lang="ts">
-    const rutas: string[] = ["Generar", "Registrar"]
+    const rutas: string[] = ["Generar", "Registrar", "Visualizar"]
 </script>

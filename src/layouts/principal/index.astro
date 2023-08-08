@@ -18,15 +18,15 @@ const { título } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>Creador de Horarios - {título}</title>
 	</head>
-	<body>
-		<Navbar />
-		<main class="w-full max-w-[1060px]">
-			<slot >
+	<body class="text-black bg-white dark:text-white dark:bg-black w-screen h-screen flex flex-col">
+		<Navbar class:list="shrink" />
+		<main class="grow max-w-[1060px]">
+			<slot />
 		</main>
 	</body>
 </html>
 
-<style>
+<style is:inline>
 	body {
 		font-family: 'Inter Variable';
 	}
