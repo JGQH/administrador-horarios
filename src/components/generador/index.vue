@@ -50,20 +50,30 @@
     const clases = usarLocalStorage<Clase[]>("clases", [])
     
     function validarSelecciones(seleccionesAlmacenadas: Selección[]) {
-        const idsActuales = clases.value.map(clase => clase.id)
-        const idsAlmacenadas = seleccionesAlmacenadas.map(clase => clase.id)
-
         // Si la cantidad de cursos es diferente, definitivamente han cambiado los cursos
-        if (idsActuales.length !== idsAlmacenadas.length)
+        if (clases.value.length !== seleccionesAlmacenadas.length)
             return false
 
         // Si la cantidad es la misma, verificar que los cursos sean los mismos
-        for(const idActual of idsActuales) {
-            // Si una sola de las ids almacenadas no concuerda con las actuales, no es válido
-            if(!idsAlmacenadas.includes(idActual)) return false
+        for(let i = 0; i < seleccionesAlmacenadas.length; i++) {
+            const claseActual = clases.value[i]
+
+            // Si la id actual no concuerda con alguna almacenada, no es válido
+            const claseAlmacenada = seleccionesAlmacenadas.find(clase => clase.id === claseActual.id)
+
+            if (!claseAlmacenada) return false
+
+            // Si la cantidad de grupos es diferente, no es válido
+            if (claseAlmacenada.grupos.length !== claseActual.grupos.length) return false
+
+            // Si los grupos del curso actual no concuerdan con los almacenados, no es válido
+            for(const grupoActual of claseActual.grupos) {
+                if(!claseAlmacenada.grupos.find(grupo => grupo.id === grupoActual.id)) return false
+            }
+
+            // NOTA: Los bloques individuales no se registrarán ya que las preferencias son hasta nivel de grupo
         }
      
-        // Ya que todas las ids actuales concuerdan con las ids almacenadas, este arreglo es válido
         return true
     }
 
