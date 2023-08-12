@@ -1,7 +1,8 @@
 ---
 import { Principal } from '@Layouts';
+import { Generador } from '@Componentes'
 ---
 <Principal título="Generar">
-	<p>No hay horarios disponibles</p>
-	<p><a href="/registrar">Comience registrando sus cursos</a></p>
+	<h1>Generado de horarios</h1>
+	<Generador client:only="vue" />
 </Principal>

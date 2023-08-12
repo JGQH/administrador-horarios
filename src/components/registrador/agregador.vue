@@ -1,5 +1,5 @@
 <template>
-    <button @click="emit('click')" v-html="agregar"></button>
+    <button class="icono" @click="emit('click')" v-html="agregar"></button>
 </template>
 
 <script setup lang="ts">

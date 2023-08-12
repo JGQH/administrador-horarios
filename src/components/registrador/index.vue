@@ -9,7 +9,7 @@
             </div>
             <div class="nombrador flex flex-row" v-else>
                 <Editor :texto="clase.nombre" @selección="seleccionar(clase.id, clase.nombre)" @eliminación="eliminarClase(clase.id)" />
-                <button class="hidden">
+                <button class="hidden icono">
                     <label class="cursor-pointer">
                         <div v-html="paleta"></div>
                         <input class="hidden" type="color" :value="clase.color" @change="cambiarColor(clase.id, ($event.target as HTMLInputElement).value)" />

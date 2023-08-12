@@ -17,3 +17,20 @@ type Bloque = {
     inicio: number,
     final:number
 }
+
+// Versión comprimida de "Clase" con "Grupo"
+type Curso = {
+    nombre: string,
+    color: string,
+    bloques: Bloque[]
+}
+
+type BloqueVisual = Bloque & {
+    color?: string
+}
+
+type Selección = Omit<Clase, 'grupos'> & {
+    grupos: Array<Grupo & {
+        seleccionado: boolean
+    }>
+}

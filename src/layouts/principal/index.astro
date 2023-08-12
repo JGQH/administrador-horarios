@@ -20,7 +20,7 @@ const { título } = Astro.props;
 	</head>
 	<body class="text-black bg-white dark:text-white dark:bg-black w-screen h-screen flex flex-col">
 		<Navbar class:list="shrink" />
-		<main class="grow max-w-[1060px]">
+		<main class="grow w-full max-w-[1060px] mx-auto">
 			<slot />
 		</main>
 	</body>

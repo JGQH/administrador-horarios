@@ -12,14 +12,14 @@
             {{ horasInicio[n - 1] }} - {{ horasFinal[n - 1] }}
         </div>
         <!-- Cuerpo -->
-        <div v-for="bloque in bloques" class="border-2 border-white bg-white-dark dark:border-black dark:bg-black-light" :style="{ gridColumnStart: bloque.día + 2, gridRowStart: bloque.inicio + 2, gridRowEnd: bloque.final + 3 }" ></div>
+        <div v-for="bloque in bloques" :class="`border-2 border-white dark:border-black ${!bloque.color && 'bg-white-dark dark:bg-black-light'}`" :style="{ gridColumnStart: bloque.día + 2, gridRowStart: bloque.inicio + 2, gridRowEnd: bloque.final + 3, backgroundColor: bloque.color}" ></div>
     </div>
 </template>
 
 <script setup lang="ts">
     import { díasSemana, horasInicio, horasFinal } from "@Librería/organizador"
 
-    const { bloques } = defineProps<{
-        bloques: Bloque[]
+    const { bloques = [] } = defineProps<{
+        bloques?: BloqueVisual[]
     }>()
 </script>

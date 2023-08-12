@@ -15,7 +15,7 @@
 
     const clases = usarLocalStorage<Clase[]>('clases', [])
 
-    const bloques = ref<Bloque[]>(clases.value ? clases.value[0]?.grupos[0]?.bloques || [] : [])
+    const bloques = ref<BloqueVisual[]>(clases.value ? clases.value[0]?.grupos[0]?.bloques || [] : [])
 
     function cambiarBloques(idGrupo:String) {
         const objeto = clases.value.flatMap(({ grupos }, índiceClase) => (
