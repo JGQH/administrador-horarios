@@ -7,6 +7,7 @@ import tailwind from "@astrojs/tailwind";
 export default defineConfig({
   integrations: [vue(), tailwind()],
   experimental: {
-    assets: true
+    assets: true,
+    viewTransitions: true
   }
 });

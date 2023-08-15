@@ -1,6 +1,7 @@
 --- 
 import '@fontsource-variable/inter'
 import { Navbar } from '@Componentes';
+import { ViewTransitions } from 'astro:transitions';
 
 interface Props {
 	título: string;
@@ -17,11 +18,12 @@ const { título } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Creador de Horarios - {título}</title>
+		<ViewTransitions fallback='animate' />
 	</head>
-	<body class="text-black bg-white dark:text-white dark:bg-black w-screen h-screen flex flex-col">
-		<Navbar class:list="shrink" />
-		<main class="grow w-full max-w-[1060px] mx-auto">
-			<slot />
+	<body class="w-screen h-screen flex flex-col text-black bg-white [&_path]:stroke-black dark:text-white dark:bg-black dark:[&_path]:stroke-white">
+		<Navbar class="shrink" direcciónActual={Astro.url.pathname} />
+		<main class="grow w-full max-w-[1060px] mx-auto p-5">
+			<slot transition:animate="fade"/>
 		</main>
 	</body>
 </html>
