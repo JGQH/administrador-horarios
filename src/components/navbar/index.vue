@@ -67,12 +67,12 @@
 
     const rutas: Ruta[] = [{
         nombre: "Generar",
-        dirección: "/"   
+        dirección: "/administrador-horarios/"
     },{
         nombre: "Registrar",
-        dirección: "/registrar"
+        dirección: "/administrador-horarios/registrar"
     },{
         nombre: "Visualizar",
-        dirección: "/visualizar"
+        dirección: "/administrador-horarios/visualizar"
     }]
 </script>

@@ -9,5 +9,7 @@ export default defineConfig({
   experimental: {
     assets: true,
     viewTransitions: true
-  }
+  },
+  site: 'https://jgqh.github.io',
+  base: '/administrador-horarios'
 });
