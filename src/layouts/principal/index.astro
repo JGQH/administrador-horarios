@@ -1,5 +1,6 @@
 --- 
-import '@fontsource-variable/inter'
+//import '@fontsource-variable/inter'
+import '@fontsource-variable/source-code-pro'
 import { Navbar } from '@Componentes';
 import { ViewTransitions } from 'astro:transitions';
 
@@ -20,9 +21,9 @@ const { título } = Astro.props;
 		<title>Creador de Horarios - {título}</title>
 		<ViewTransitions fallback='animate' />
 	</head>
-	<body class="w-screen h-screen flex flex-col text-black bg-white [&_path]:stroke-black dark:text-white dark:bg-black dark:[&_path]:stroke-white">
+	<body class="w-screen h-screen flex flex-col text-black bg-white [&_path]:stroke-black dark:text-white dark:bg-black dark:[&_path]:stroke-white text-xs md:text-sm">
 		<Navbar class="shrink" direcciónActual={Astro.url.pathname} />
-		<main class="grow w-full max-w-[1060px] mx-auto p-5">
+		<main class="grow w-full max-w-[1060px] mx-auto p-3 md:p-5">
 			<slot transition:animate="fade"/>
 		</main>
 	</body>
@@ -30,6 +31,6 @@ const { título } = Astro.props;
 
 <style is:inline>
 	body {
-		font-family: 'Inter Variable';
+		font-family: 'Source Code Pro Variable', sans-serif;
 	}
 </style>

@@ -1,8 +1,11 @@
 ---
-import { Registrador } from "@Componentes";
-import { Principal } from "@Layouts";
+import { Registrador } from "@Componentes"
+import { Principal } from "@Layouts"
+import { H1 } from '@Componentes'
 ---
 <Principal título="Registrar">
-    <h1>Registrado de cursos</h1>
-    <Registrador client:only="vue" />
+    <H1 class="text-center mb-3 md:mb-5">REGISTRADO DE CURSOS</H1>
+    <div class="relative overflow-y-auto h-[90%] rounded-md border-2 border-white-dark bg-white-dark dark:border-black-light dark:bg-black-light">
+        <Registrador client:only="vue" />
+    </div>
 </Principal>

@@ -3,17 +3,25 @@
         <p>No hay horarios disponibles</p>
         <p><a href="/registrar" class="italic text-accent underline">Comience registrando sus cursos</a></p>
     </div>
-    <div v-else class="grid">
-        <Horario :bloques="horarios[índiceHorarios]?.flatMap(({ bloques, color }) => bloques.map(bloque => ({...bloque, color}))) || []" />
+    <div v-else class="grid grid-cols-2 gap-5">
+        <div class="w-full overflow-x-auto col-span-2">
+            <Horario :bloques="horarios[índiceHorarios]?.flatMap(({ bloques, color }) => bloques.map(bloque => ({...bloque, color}))) || []" />
+        </div>
+        <div class="flex mx-auto col-span-2 gap-5 bg-white-dark dark:bg-black-light py-2 px-3 rounded-md">
+            <button @click="anteriorHorario" class="[&_svg]:h-[1rem] [&_svg]:w-[1rem]" :disabled="horarios.length <= 1" v-html="flechaIzquierda"></button>
+            <p class="font-bold" v-if="horarios.length > 1">{{ índiceHorarios + 1 }} / {{ horarios.length }}</p>
+            <p class="font-bold" v-else>0 / 0</p>
+            <button @click="siguienteHorario" class="[&_svg]:h-[1rem] [&_svg]:w-[1rem]" :disabled="horarios.length <= 1" v-html="flechaDerecha"></button>
+        </div>
         <div>
             <div>
-                <h2>Grupos a considerar:</h2>
+                <H2>Grupos a considerar:</H2>
             </div>
             <div>
-                <select @change="cambiarSelección(($event.target as HTMLSelectElement).value)">
+                <select class="max-md:w-full bg-white-dark dark:bg-black-light py-3 text-center rounded-md" @change="cambiarSelección(($event.target as HTMLSelectElement).value)">
                     <option disabled value="">Clases</option>
                     <option v-for="selección in selecciones" :value="selección.id">
-                        {{ selección.nombre }} ({{ selección.grupos.filter(grupo => grupo.seleccionado).length }} / {{ selección.grupos.length }} )
+                        {{ selección.nombre }} ({{ selección.grupos.filter(grupo => grupo.seleccionado).length }} / {{ selección.grupos.length }})
                     </option>
                 </select>
             </div>
@@ -23,19 +31,15 @@
                 </p>
             </div>
         </div>
-        <div>
-            <button @click="anteriorHorario">Anterior</button>
-            <h2>{{ índiceHorarios + 1 }} / {{ horarios.length }}</h2>
-            <button @click="siguienteHorario">Siguiente</button>
-        </div>
-        <div>
-            <h2>Cursos Mostrados</h2>
+        <div class="row-span-2">
+            <H2>Cursos Mostrados:</H2>
+            <p v-if="!horarios[índiceHorarios]" class="italic">Haga click en el botón "Generar Horarios"</p>
             <p v-for="curso in horarios[índiceHorarios]" :style="{ 
                 color: curso.color
              }">{{ curso.nombre }}</p>
         </div>
-        <div>
-            <button @click="generarHorarios">
+        <div class="flex items-center justify-center">
+            <button class="py-2 px-3 border-2 border-accent font-bold rounded-md hover:bg-accent hover:text-white transition-colors active:bg-accent-dark active:border-accent-dark active:text-white-dark" @click="generarHorarios">
                 Generar horarios
             </button>
         </div>
@@ -43,7 +47,10 @@
 </template>
 
 <script setup lang="ts">
+    import flechaIzquierda from '@Assets/flecha-izquierda.svg?raw'
+    import flechaDerecha from '@Assets/flecha-derecha.svg?raw'
     import usarLocalStorage from '@Librería/usarLocalStorage';
+    import { default as H2} from '../etiquetas/h2.vue'
     import { default as Horario } from '../horario/index.vue'
     import { ref } from 'vue';
 

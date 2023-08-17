@@ -1,5 +1,10 @@
 <template>
-    <button class="icono" @click="emit('click')" v-html="agregar"></button>
+    <button class="italic flex items-center gap-2 p-2" @click="emit('click')">
+        <span class="icono" v-html="agregar"></span>
+        <span>
+            <slot></slot>
+        </span>
+    </button>
 </template>
 
 <script setup lang="ts">

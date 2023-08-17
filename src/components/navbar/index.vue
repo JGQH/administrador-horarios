@@ -1,13 +1,13 @@
 <template>
     <header class="flex bg-white-dark dark:bg-black-light items-center">
         <!--Título principal-->
-        <h1 class="grow font-bold p-5">CREADOR DE HORARIOS</h1>
+        <H1 class="grow font-bold p-3 md:p-5">CREADOR DE HORARIOS</H1>
         <!--Botón del menú-->
         <nav tabindex="0" class="relative navbar shrink max-md:cursor-pointer max-md:w-[2rem] max-md:h-[2rem] max-md:mr-3">
             <ul role="menubar" aria-haspopup="true" class="z-10 hidden md:block bg-white-dark dark:bg-black-light max-md:absolute top-full right-0 flex flex-col md:flex-row text-center">
                 <!--Opciones del menú-->
                 <li v-for="ruta in rutas" role="menuitem" :aria-label="ruta.nombre" class="block md:inline-block">
-                    <a :href="ruta.dirección" :class="'py-4 px-8 font-bold md:py-2 md:px-3 md:mr-3 block transition-colors hover:bg-white dark:hover:bg-black md:hover:bg-accent md:hover:text-white md:rounded-md ' + (direcciónActual === ruta.dirección ? 'text-black dark:text-white' : 'text-black-light dark:text-white-dark')">{{ ruta.nombre }}</a>
+                    <a :href="ruta.dirección" :class="'p-8 font-bold md:py-2 md:px-4 md:mr-2 block transition-colors hover:bg-white dark:hover:bg-black md:hover:bg-accent md:hover:text-white md:rounded-md ' + (direcciónActual === ruta.dirección ? 'text-black dark:text-white' : 'text-black-light dark:text-white-dark')">{{ ruta.nombre }}</a>
                 </li>
             </ul>
         </nav>
@@ -54,6 +54,8 @@
 </style>
 
 <script setup lang="ts">
+    import { default as H1 } from '../etiquetas/h1.vue'
+
     type Ruta = {
         nombre: string,
         dirección: string
