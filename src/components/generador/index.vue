@@ -1,7 +1,7 @@
 <template>
     <div v-if="clases?.length === 0">
         <p>No hay horarios disponibles</p>
-        <p><a href="/registrar" class="italic text-accent underline">Comience registrando sus cursos</a></p>
+        <p><a href="/administrador-horarios/registrar" class="italic text-accent underline">Comience registrando sus cursos</a></p>
     </div>
     <div v-else class="grid grid-cols-2 gap-5">
         <div class="w-full overflow-x-auto col-span-2">
