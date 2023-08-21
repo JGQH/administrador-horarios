@@ -27,11 +27,6 @@ type Curso = {
 }
 
 type BloqueVisual = Bloque & {
+    nombre?: string
     color?: string
-}
-
-type Selección = Omit<Clase, 'grupos'> & {
-    grupos: Array<Grupo & {
-        seleccionado: boolean
-    }>
 }

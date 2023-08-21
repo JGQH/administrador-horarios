@@ -15,11 +15,11 @@ import { H1, H2, HorarioGenerador, BotonGenerador, MostradorGenerador, RotadorGe
 			<div>
 				<H2>Grupos a considerar:</H2>
 			</div>
-			<div>
-				<SelectorGenerador clase='max-md:w-full py-3 text-center' client:only="vue"/>
+			<div class="w-full md:w-[67.5%]">
+				<SelectorGenerador clase='w-full py-3 text-center' client:only="vue"/>
 			</div>
-			<div>
-				<MarcadorGenerador client:only="vue" clase="flex gap-3 items-center justify-center"/>
+			<div class="w-full md:w-[67.5%] grid grid-cols-2 md:grid-cols-1 gap-1">
+				<MarcadorGenerador client:only="vue" clase="w-full flex gap-3 items-center justify-center"/>
 			</div>
 		</div>
 		<div class="row-span-2">

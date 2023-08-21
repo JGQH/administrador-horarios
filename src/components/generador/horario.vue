@@ -1,5 +1,5 @@
 <template>
-    <Horario :bloques="$horariosGenerados[$índiceGenerador]?.flatMap(({ bloques, color }) => bloques.map(bloque => ({ color, ...bloque }))) || []" />
+    <Horario :bloques="$horariosGenerados[$índiceGenerador]?.flatMap(({ nombre, bloques, color }) => bloques.map(bloque => ({ nombre, color, ...bloque }))) || []" />
 </template>
 
 <script setup lang="ts">
