@@ -125,7 +125,7 @@
         const índiceClase = clases.value.findIndex(clase => clase.id === id)
 
         // Sabemos que esta función se llama de manera válida, así que no saltamos la comprobación
-        clases.value[índiceClase].grupos.push({ nombre: "", bloques: [], id: uuid() })
+        clases.value[índiceClase].grupos.push({ nombre: "", bloques: [], id: uuid(), seleccionado: true })
     }
 
     function agregarClase() {

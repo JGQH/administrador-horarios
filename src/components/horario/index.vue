@@ -23,6 +23,6 @@
     import { díasSemana, horasInicio, horasFinal } from "@Librería/organizador"
 
     const { bloques = [] } = defineProps<{
-        bloques?: BloqueVisual[]
+        bloques?: readonly BloqueVisual[]
     }>()
 </script>

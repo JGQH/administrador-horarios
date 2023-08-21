@@ -8,7 +8,8 @@ type Clase = {
 type Grupo = {
     nombre: string,
     id: string,
-    bloques: Bloque[]
+    bloques: Bloque[],
+    seleccionado?: boolean
 }
 
 type Bloque = {
@@ -22,7 +23,7 @@ type Bloque = {
 type Curso = {
     nombre: string,
     color: string,
-    bloques: Bloque[]
+    bloques: readonly Bloque[]
 }
 
 type BloqueVisual = Bloque & {

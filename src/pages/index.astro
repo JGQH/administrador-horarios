@@ -1,9 +1,40 @@
 ---
 import { Principal } from '@Layouts'
-import { Generador } from '@Componentes'
-import { H1 } from '@Componentes'
+import { H1, H2, HorarioGenerador, BotonGenerador, MostradorGenerador, RotadorGenerador, SelectorGenerador, MarcadorGenerador } from '@Componentes'
 ---
 <Principal título="Generar">
 	<H1 class="text-center mb-3 md:mb-5">GENERADO DE CURSOS</H1>
-	<Generador client:only="vue" />
+	<div class="grid grid-cols-2 gap-5">
+		<div class="w-full overflow-x-auto col-span-2">
+			<HorarioGenerador client:only="vue" />
+		</div>
+        <div class="flex mx-auto col-span-2 gap-3 bg-white-dark dark:bg-black-light py-2 px-3 rounded-md">
+			<RotadorGenerador client:only="vue" />
+		</div>
+		<div class="flex flex-col items-center gap-3">
+			<div>
+				<H2>Grupos a considerar:</H2>
+			</div>
+			<div>
+				<SelectorGenerador clase='max-md:w-full py-3 text-center' client:only="vue"/>
+			</div>
+			<div>
+				<MarcadorGenerador client:only="vue" clase="flex gap-3 items-center justify-center"/>
+			</div>
+		</div>
+		<div class="row-span-2">
+			<div>
+				<H2>Cursos mostrados:</H2>
+			</div>
+			<div>
+				<MostradorGenerador client:only="vue"/>
+			</div>
+		</div>
+		<div class="flex items-center justify-center">
+			<BotonGenerador client:only="vue" clase="py-2 px-3 border-2 border-accent font-bold rounded-md hover:bg-accent hover:text-white transition-colors active:bg-accent-dark active:border-accent-dark active:text-white-dark">
+				Generar Horarios
+			</BotonGenerador>
+		</div>
+	</div>
+	<!--<Generador client:only="vue" />-->
 </Principal>
