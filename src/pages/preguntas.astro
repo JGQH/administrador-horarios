@@ -1,0 +1,20 @@
+---
+import { Principal } from "@Layouts";
+import { H1, H2 } from '@Componentes'
+
+const preguntas = (await Astro.glob<Pregunta>('../content/preguntas/*.md'))
+                    .sort((pA, pB) => pA.frontmatter.orden - pB.frontmatter.orden)
+---
+<Principal título="FAQ">
+    <H1 class="text-center mb-3 md:mb-5">FAQ - Preguntas Frecuentes</H1>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-5 [&_a]:text-accent [&_a]:underline">
+        {
+            preguntas.map(pregunta => (
+                <div class="bg-white-dark dark:bg-black-light p-3 md:p-5 rounded-md flex flex-col gap-1 md:gap-3">
+                    <H2>{ pregunta.frontmatter.orden }. { pregunta.frontmatter.pregunta }</H2>
+                    <pregunta.Content  />
+                </div>
+            ))
+        }
+    </div>
+</Principal>

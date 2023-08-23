@@ -74,5 +74,8 @@
     },{
         nombre: "Visualizar",
         dirección: "/administrador-horarios/visualizar"
+    },{
+        nombre: "FAQ",
+        dirección: "/administrador-horarios/preguntas"
     }]
 </script>

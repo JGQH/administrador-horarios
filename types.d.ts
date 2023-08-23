@@ -30,3 +30,9 @@ type BloqueVisual = Bloque & {
     nombre?: string
     color?: string
 }
+
+// Para las preguntas del FAQ
+type Pregunta = {
+    pregunta: string,
+    orden: number
+}
