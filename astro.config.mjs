@@ -7,8 +7,7 @@ import tailwind from "@astrojs/tailwind";
 export default defineConfig({
   integrations: [vue(), tailwind()],
   experimental: {
-    assets: true,
-    viewTransitions: true
+    assets: true
   },
   site: 'https://jgqh.github.io',
   base: '/administrador-horarios'
