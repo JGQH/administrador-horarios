@@ -2,15 +2,19 @@
     <div class="flex flex-row items-center">
         <span v-if="texto.trim() === ''" class="italic" @dblclick="emit('editar')">(Vacío)</span>
         <span v-else @dblclick="emit('editar')" class="pr-2">{{ texto }}</span>
-        <button v-for="opcion in opciones.filter(op => op !== 'pintar') as Exclude<Emits, 'pintar'>[]"
-                class="hidden [&_svg]:h-[0.9rem] [&_svg]:w-[1rem]"
-                @click="emit(opcion)" v-html="htmls[opcion]"></button>
-        <button v-if="opciones.includes('pintar')" class="hidden">
-            <label class="cursor-pointer">
-                <div class="[&_svg]:h-[0.9rem] [&_svg]:w-[1rem]" v-html="paleta"></div>
-                <input class="hidden" type="color" :value="color" @change="emit('pintar', ($event.target as HTMLInputElement).value)" />
-            </label>
-        </button>
+        <div class="relative">
+            <div class="flex flex-row gap-1 absolute -translate-y-1/2">
+                <button v-for="opcion in opciones.filter(op => op !== 'pintar') as Exclude<Emits, 'pintar'>[]"
+                    class="hidden [&_svg]:h-[1.25rem] [&_svg]:w-[1.25rem]"
+                    @click="emit(opcion)" v-html="htmls[opcion]"></button>
+                <button v-if="opciones.includes('pintar')" class="hidden">
+                    <label class="cursor-pointer">
+                        <div class="[&_svg]:h-[1.25rem] [&_svg]:w-[1.25rem]" v-html="paleta"></div>
+                        <input class="hidden" type="color" :value="color" @change="emit('pintar', ($event.target as HTMLInputElement).value)" />
+                    </label>
+                </button>
+            </div>
+        </div>
     </div>
 </template>
 
