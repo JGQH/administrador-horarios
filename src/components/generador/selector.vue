@@ -9,7 +9,8 @@
 
 <script setup lang="ts">
     import Select from '../etiquetas/select.vue'
-    import { índiceMarcador, clases } from '@Librería/administrador'
+    import { índiceMarcador } from '@Librería/horarios'
+    import { clases } from '@Librería/clases'
     import { useStore } from '@nanostores/vue';
 
     const { clase } = defineProps<{ clase?: string }>()

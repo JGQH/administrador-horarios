@@ -1,25 +1,33 @@
 ---
 import { Principal } from '@Layouts'
-import { H1, H2, HorarioGenerador, BotonGenerador, MostradorGenerador, RotadorGenerador, SelectorGenerador, MarcadorGenerador } from '@Componentes'
+import { Button, H1, H2, HorarioGenerador, BotonGenerador, MostradorGenerador, RotadorGenerador, SelectorGenerador, MarcadorGenerador, SeñaladorGenerador } from '@Componentes'
 ---
 <Principal título="Generar">
 	<H1 class="text-center mb-3 md:mb-5">GENERADO DE CURSOS</H1>
 	<div class="grid grid-cols-2 gap-5">
 		<div class="w-full overflow-x-auto col-span-2">
-			<HorarioGenerador client:only="vue" />
+			<HorarioGenerador client:load />
 		</div>
-        <div class="flex mx-auto col-span-2 gap-3 bg-white-dark dark:bg-black-light py-2 px-3 rounded-md">
-			<RotadorGenerador client:only="vue" />
+		<div class="col-span-2 flex justify-between">
+			<Button disabled={true}>
+				Tomar Captura
+			</Button>
+        	<div class="flex gap-3 bg-white-dark dark:bg-black-light py-2 px-3 rounded-md">
+				<RotadorGenerador client:only="vue" />
+			</div>
+			<SeñaladorGenerador client:only="vue">
+				Agregar a Favoritos
+			</SeñaladorGenerador>
 		</div>
 		<div class="flex flex-col items-center gap-3">
 			<div>
 				<H2>Grupos a considerar:</H2>
 			</div>
 			<div class="w-full md:w-[67.5%]">
-				<SelectorGenerador clase='w-full py-3 text-center' client:only="vue"/>
+				<SelectorGenerador clase='w-full py-3 text-center' client:load/>
 			</div>
 			<div class="w-full md:w-[67.5%] grid grid-cols-2 md:grid-cols-1 gap-1">
-				<MarcadorGenerador client:only="vue" clase="w-full flex gap-3 items-center justify-center"/>
+				<MarcadorGenerador client:load clase="w-full flex gap-3 items-center justify-center"/>
 			</div>
 		</div>
 		<div class="row-span-2">
@@ -27,14 +35,13 @@ import { H1, H2, HorarioGenerador, BotonGenerador, MostradorGenerador, RotadorGe
 				<H2>Cursos mostrados:</H2>
 			</div>
 			<div>
-				<MostradorGenerador client:only="vue"/>
+				<MostradorGenerador client:load/>
 			</div>
 		</div>
 		<div class="flex items-center justify-center">
-			<BotonGenerador client:only="vue" clase="py-2 px-3 border-2 border-accent font-bold rounded-md hover:bg-accent hover:text-white transition-colors active:bg-accent-dark active:border-accent-dark active:text-white-dark">
+			<BotonGenerador client:load clase="py-2 px-3 border-2 border-accent font-bold rounded-md hover:bg-accent hover:text-white transition-colors active:bg-accent-dark active:border-accent-dark active:text-white-dark">
 				Generar Horarios
 			</BotonGenerador>
 		</div>
 	</div>
-	<!--<Generador client:only="vue" />-->
 </Principal>

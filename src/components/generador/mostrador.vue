@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-    import { horariosGenerados, índiceGenerador } from '@Librería/administrador'
+    import { horariosGenerados, índiceGenerador } from '@Librería/horarios'
     import { useStore } from '@nanostores/vue';
 
     const $horariosGenerados = useStore(horariosGenerados)

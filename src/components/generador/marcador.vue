@@ -6,8 +6,9 @@
 </template>
 
 <script setup lang="ts">
-    import { clases, índiceMarcador } from '@Librería/administrador'
     import { useStore } from '@nanostores/vue';
+    import { índiceMarcador } from '@Librería/horarios'
+    import { clases } from '@Librería/clases'
 
     const { clase } = defineProps<{ clase: string }>()
 

@@ -36,3 +36,14 @@ type Pregunta = {
     pregunta: string,
     orden: number
 }
+
+// Para el sistema de horarios favoritos
+type Agrupación = {
+    nombre: string,
+    id: string,
+    contenido: {
+        nombre: string,
+        id: string,
+        cursos: readonly Curso[]
+    }[]
+}

@@ -1,5 +1,5 @@
 <template>
-    <header class="flex bg-white-dark dark:bg-black-light items-center">
+    <header :class="'flex bg-white-dark dark:bg-black-light items-center ' + clase">
         <!--Título principal-->
         <H1 class="grow font-bold p-3 md:p-5">CREADOR DE HORARIOS</H1>
         <!--Botón del menú-->
@@ -61,7 +61,8 @@
         dirección: string
     }
 
-    const { direcciónActual } = defineProps<{
+    const { clase, direcciónActual } = defineProps<{
+        clase: string,
         direcciónActual: string
     }>()
 
@@ -72,8 +73,8 @@
         nombre: "Registrar",
         dirección: "/administrador-horarios/registrar"
     },{
-        nombre: "Visualizar",
-        dirección: "/administrador-horarios/visualizar"
+        nombre: "Administrar",
+        dirección: "/administrador-horarios/administrar"
     },{
         nombre: "FAQ",
         dirección: "/administrador-horarios/preguntas"
