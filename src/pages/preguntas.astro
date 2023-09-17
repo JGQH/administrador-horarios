@@ -1,17 +1,30 @@
 ---
 import { Principal } from "@Layouts";
-import { H1, PreguntasFAQ } from '@Componentes'
+import { H1, H2 } from '@Componentes'
+import { getCollection } from "astro:content";
 
-const preguntas = (await Astro.glob<Pregunta>('../content/preguntas/*.md'))
-                    .sort((pA, pB) => pA.frontmatter.orden - pB.frontmatter.orden)
-                    .map(({ frontmatter: { pregunta, orden }, compiledContent }) => ({
-                        html: compiledContent(),
-                        pregunta, orden
-                    }))
+const preguntas = (await getCollection('preguntas'))
+                        .sort((pA, pB) => pA.data.orden - pB.data.orden)
+                        .map((pregunta, indexPregunta) => ({
+                            render: pregunta.render,
+                            orden: indexPregunta + 1,
+                            pregunta: pregunta.data.pregunta
+                        }))
 ---
 <Principal título="FAQ">
     <H1 class="text-center mb-3 md:mb-5">FAQ - Preguntas Frecuentes</H1>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-5 [&_a]:text-accent [&_a]:underline">
-        <PreguntasFAQ preguntas={preguntas} />
+        { preguntas.map(pregunta => (
+            <div class="bg-white-dark dark:bg-black-light p-3 md:p-5 rounded-md">
+                <H2 class="mb-3">{ pregunta.orden }. { pregunta.pregunta }</H2>
+                <div class="[&_p:not(:last-child)]:mb-3">
+                    { (async() => {
+                        const Contenido = (await pregunta.render()).Content
+
+                        return <Contenido />
+                    })() }
+                </div>
+            </div>
+        )) }
     </div>
 </Principal>

@@ -1,13 +1,17 @@
 ---
 import { Principal } from '@Layouts'
-import { H1, VisualizadorAdministrador, HorarioAdministrador } from '@Componentes'
+import { H1, H2, VisualizadorAdministrador, HorarioAdministrador, MostradorAdministrador } from '@Componentes'
 ---
 <Principal título='Administrador'>
     <H1 class="text-center mb-3 md:mb-5">Administrador</H1>
-    <div class="w-full grid grid-cols-3 gap-3">
-        <div class="relative h-full overflow-y-auto">
+    <div class="w-full grid grid-cols-[1fr_2fr] grid-rows-[auto_1fr] gap-3">
+        <div class="relative row-span-2 h-full overflow-y-auto">
             <VisualizadorAdministrador client:load />
         </div>
-        <HorarioAdministrador client:load class="col-span-2" />
+        <HorarioAdministrador client:load />
+        <div class="col-start-2">
+            <H2>Cursos mostrados:</H2>
+            <MostradorAdministrador client:load />
+        </div>
     </div>
 </Principal>

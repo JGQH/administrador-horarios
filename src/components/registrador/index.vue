@@ -3,11 +3,11 @@
         <div v-if="$clases?.length === 0">
             <p class="italic pl-2 pt-2">Comience agregando sus clases dando click al botón "Agregar clase"</p>
         </div>
-        <div v-else v-for="(clase, indexClase) in $clases" :style="{ backgroundColor: clase.color }" class="p-2">
+        <div v-else v-for="clase in $clases" :style="{ backgroundColor: clase.color }" class="p-2">
             <div v-if="idSeleccionada===clase.id">
                 <input class="font-bold rounded-md p-2 bg-white dark:bg-black"
                     :value="clase.nombre"
-                    @input="renombrarClase(indexClase, ($event.target as HTMLInputElement).value)"
+                    @input="renombrarClase(clase.id, ($event.target as HTMLInputElement).value)"
                     @focusout="deseleccionar()"
                     autofocus />
             </div>
@@ -17,15 +17,15 @@
                     :color="clase.color"
                     :opciones="['editar', 'eliminar', 'pintar']"
                     @editar="seleccionar(clase.id, clase.nombre)"
-                    @eliminar="eliminarClase(indexClase)"
-                    @pintar="cambiarColor(indexClase, $event)" />
+                    @eliminar="eliminarClase(clase.id)"
+                    @pintar="cambiarColor(clase.id, $event)" />
             </div>
             <div class="pl-5">
-                <div v-for="(grupo, indexGrupo) in clase.grupos">
+                <div v-for="grupo in $grupos.filter(g => g.clase === clase.id)">
                     <div v-if="idSeleccionada===grupo.id">
                         <input class="font-bold rounded-md p-2 bg-white dark:bg-black"
                             :value="grupo.nombre"
-                            @input="renombrarGrupo(indexClase, indexGrupo, ($event.target as HTMLInputElement).value)"
+                            @input="renombrarGrupo(grupo.id, ($event.target as HTMLInputElement).value)"
                             @focusout="deseleccionar()"
                             autofocus />
                     </div>
@@ -34,10 +34,10 @@
                             :texto="grupo.nombre"
                             :opciones="['editar', 'eliminar']"
                             @editar="seleccionar(grupo.id, grupo.nombre)"
-                            @eliminar="eliminarGrupo(indexClase, indexGrupo)" />
+                            @eliminar="eliminarGrupo(grupo.id)" />
                     </div>
                     <div class="pl-8">
-                        <div v-for="(bloque, indexBloque) in grupo.bloques">
+                        <div v-for="bloque in $bloques.filter(b => b.grupo === grupo.id)">
                             <div v-if="idSeleccionada===bloque.id">
                                 <Select class="inline p-2" @change="reformarBloque('día', +($event.target as HTMLSelectElement).value)">
                                     <option disabled value="">Día</option>
@@ -51,7 +51,7 @@
                                     <option disabled value="">Final</option>
                                     <option v-for="(final, índiceFinal) in horasFinal" :value="índiceFinal" :selected="índiceFinal===bloque.final">{{ final }}</option>
                                 </Select> | 
-                                <button class="font-bold bg-black text-white rounded-md p-2 dark:bg-white dark:text-black" @click="reprogramarBloque(indexClase, indexGrupo, indexBloque, JSON.parse(nombreNuevo) as Bloque); deseleccionar()">
+                                <button class="font-bold bg-black text-white rounded-md p-2 dark:bg-white dark:text-black" @click="reprogramarBloque(bloque.id, JSON.parse(nombreNuevo) as Omit<Bloque, 'id'>); deseleccionar()">
                                     Aceptar
                                 </button>
                             </div>
@@ -60,13 +60,13 @@
                                     :texto="formatoBloque(bloque)"
                                     :opciones="['editar', 'eliminar']"
                                     @editar="seleccionar(bloque.id, JSON.stringify(bloque))"
-                                    @eliminar="eliminarBloque(indexClase, indexGrupo, indexBloque)" />
+                                    @eliminar="eliminarBloque(bloque.id)" />
                             </div>
                         </div>
-                        <Agregador @click="agregarBloque(indexClase, indexGrupo)">Agregar bloque</Agregador>
+                        <Agregador @click="agregarBloque(grupo.id)">Agregar bloque</Agregador>
                     </div>
                 </div>
-                <Agregador @click="agregarGrupo(indexClase)">Agregar grupo</Agregador>
+                <Agregador @click="agregarGrupo(clase.id)">Agregar grupo</Agregador>
             </div>
         </div>
         <Agregador @click="agregarClase()">Agregar clase</Agregador>
@@ -75,7 +75,7 @@
 
 <script setup lang="ts">
     import { díasSemana, horasInicio, horasFinal} from '@Librería/organizador'
-    import { clases, cambiarColor, agregarClase, agregarGrupo, agregarBloque, eliminarClase, eliminarGrupo, eliminarBloque, renombrarClase, renombrarGrupo, reprogramarBloque } from '@Librería/clases'
+    import { clases, grupos, bloques, cambiarColor, agregarClase, agregarGrupo, agregarBloque, eliminarClase, eliminarGrupo, eliminarBloque, renombrarClase, renombrarGrupo, reprogramarBloque } from '@Librería/clases'
     import Select from '../etiquetas/select.vue'
     import Editor from '../etiquetas/editor.vue'
     import Agregador from '../etiquetas/agregador.vue'
@@ -86,6 +86,8 @@
     const nombreNuevo = ref<string>('')
     
     const $clases = useStore(clases)
+    const $grupos = useStore(grupos)
+    const $bloques = useStore(bloques)
 
     // Utilidades
     function seleccionar(id: string, nombre: string) {

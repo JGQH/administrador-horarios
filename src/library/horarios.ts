@@ -1,14 +1,23 @@
-import { action, atom } from "nanostores";
+import { action, atom, computed } from "nanostores";
 import { persistentAtom } from "@nanostores/persistent";
-import { clases } from "./clases";
+import { clases, grupos, bloques } from "./clases";
 
 export const horariosGenerados = persistentAtom<Curso[][]>('horarios', [], {
     encode: JSON.stringify,
     decode: JSON.parse,
 })
 
-export const índiceMarcador = atom<number>(0)
+export const idClaseMarcada = atom<IdClase | undefined>(clases.get()[0]?.id)
 export const índiceGenerador = atom<number>(0)
+
+export const horarioGeneradoVisualizado = computed([horariosGenerados, índiceGenerador], ($horariosGenerados, $indexGenerador) => {
+    const horarioActual = $horariosGenerados[$indexGenerador]
+
+    if (!horarioActual) return []
+
+    return horarioActual
+    //return horarioActual.flatMap(({ nombre, bloques, color }) => bloques.map(bloque => ({ ...bloque, nombre, color })))
+})
 
 // ROTAR
 export const rotarÍndice = action(índiceGenerador, 'rotarAnterior', (store, función: 'siguiente'|'anterior') => {
@@ -38,9 +47,22 @@ function esVálido(horario: Curso[], nuevoCurso: Curso): Boolean {
     return true
 }
 
-export const generarHorarios = action(clases, 'generarHorarios', (store) => {
+export const generarHorarios = () => {
+    // Obtenemos el estado actual de las clases, grupos y bloques
+    const $clases = clases.get()
+    const $grupos = grupos.get()
+    const $bloques = bloques.get()
+
+    const $sistema: Sistema = $clases.map(clase => ({
+        ...clase,
+        grupos: $grupos.filter(grupo => grupo.clase === clase.id).map(grupo => ({
+            ...grupo,
+            bloques: $bloques.filter(bloque => bloque.grupo === grupo.id)
+        }))
+    }))
+
     // Solo consideramos las clases que tengan, al menos, 1 grupo seleccionado
-    const clasesConsideradas = store.get().filter(clase => clase.grupos.filter(grupo => grupo.seleccionado).length > 0)
+    const clasesConsideradas = $sistema.filter(clase => clase.grupos.filter(grupo => grupo.seleccionado).length > 0)
 
     if (clasesConsideradas.length === 0) { // Si no hay clases a evaluar, nos saltamos la evaluación
         horariosGenerados.set([])
@@ -79,4 +101,4 @@ export const generarHorarios = action(clases, 'generarHorarios', (store) => {
     // Reiniciamos el índice y actualizamos la lista de horarios
     índiceGenerador.set(0)
     horariosGenerados.set([...horariosConsiderados])
-})
+}

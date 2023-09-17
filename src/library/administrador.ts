@@ -1,57 +1,84 @@
 import { v4 as uuid } from 'uuid'
-import { action, atom } from "nanostores";
+import { action, atom, computed } from "nanostores";
 import { persistentAtom } from "@nanostores/persistent";
 
-export const horariosFavoritos = persistentAtom<Agrupación[]>('favoritos', [{ nombre: "(No agrupados)", id: '0', contenido: [] }], {
+export const separadores = persistentAtom<Separador[]>('v2:agrupaciones', [{
+    nombre: '(No agrupados)',
+    id: 'ids:0'
+}], {
     encode: JSON.stringify,
     decode: JSON.parse
 })
 
-export const bloquesVisualizados = atom<readonly BloqueVisual[]>([])
+export const horariosFavoritos = persistentAtom<HorarioFavorito[]>('v2:favoritos', [], {
+    encode: JSON.stringify,
+    decode: JSON.parse
+})
 
-// MOSTRADOR
-export const mostrarHorario = action(bloquesVisualizados, 'mostrarHorario', (store, horario: readonly Curso[]) => {
-    const bloques = horario.flatMap(({ nombre, bloques, color }) => bloques.map(bloque => ({ nombre, color, ...bloque })))
+export const idHorarioFavoritoVisualizado = atom<IdHorarioFavorito | undefined>()
 
-    store.set(bloques)
+export const horarioFavoritoVisualizado = computed([horariosFavoritos, idHorarioFavoritoVisualizado], ($horariosFavoritos, $idHorarioFavoritoVisualizado) => {
+    if (!$idHorarioFavoritoVisualizado) return []
+
+    const cursos = $horariosFavoritos.find(horarioFavorito => horarioFavorito.id === $idHorarioFavoritoVisualizado)?.cursos
+
+    if (!cursos) return []
+
+    return cursos
 })
 
 // SEPARADORES
-export const agregarSeparador = action(horariosFavoritos, 'agregarSeparador', (store) => {
-    const agrupados = store.get().filter(separador => separador.id !== '0')
-    const desagrupados = store.get().find(separador => separador.id === '0')
+export const agregarSeparador = action(separadores, 'agregarSeparador', (store) => {
+    const nuevosSeparadores = store.get()
 
-    if (desagrupados) {
-        store.set([...agrupados, { nombre: '', id: uuid(), contenido:[] }, desagrupados])
+    nuevosSeparadores.splice(nuevosSeparadores.length - 1, 0, { nombre: '', id: `ids:${uuid()}` })
+
+    store.set([...nuevosSeparadores])
+})
+
+export const renombrarSeparador = action(separadores, 'renombrarSeparador', (store, nuevoNombre: string, idSeparador: IdSeparador) => {
+    const nuevosSeparadores = store.get()
+
+    const indexSeparador = nuevosSeparadores.findIndex(separador => separador.id === idSeparador)
+
+    if (indexSeparador !== -1) {
+        nuevosSeparadores[indexSeparador].nombre = nuevoNombre
+
+        store.set([...nuevosSeparadores])
     }
 })
 
-export const renombrarSeparador = action(horariosFavoritos, 'renombrarSeparador', (store, nuevoNombre: string, indexFavorito: number) => {
-    const nuevosHorariosFavoritos = store.get()
-    nuevosHorariosFavoritos[indexFavorito].nombre = nuevoNombre
-    store.set([...nuevosHorariosFavoritos])
-})
+export const eliminarSeparador = action(separadores, 'eliminarSeparador', (store, idSeparador: IdSeparador) => {
+    store.set([...store.get().filter(separador => separador.id !== idSeparador)])
 
-export const eliminarSeparador = action(horariosFavoritos, 'eliminarSeparador', (store, indexFavorito: number) => {
-    const nuevosHorariosFavoritos = store.get()
-    nuevosHorariosFavoritos.splice(indexFavorito, 1)
-
-    store.set([...nuevosHorariosFavoritos])
+    eliminarHorarios(idSeparador)
 })
 
 // HORARIOS
-export const eliminarHorario = action(horariosFavoritos, 'eliminarHorario', (store, indexFavorito: number, indexHorario: number) => {
-    const nuevosHorariosFavoritos = store.get()
-    nuevosHorariosFavoritos[indexFavorito].contenido.splice(indexHorario, 1)
-
-    store.set([...nuevosHorariosFavoritos])
+export const agregarHorario = action(horariosFavoritos, 'agregarHorarios', (store, cursos: readonly Curso[]) => {
+    store.set([...store.get(), { separador: 'ids:0', id: `idf:${uuid()}`, cursos }])
 })
 
-export const moverHorario = action(horariosFavoritos, 'moverHorario', (store, indexHorario: number, indexFavoritoOrigen: number, indexFavoritoDestino: number) => {
+const eliminarHorarios = action(horariosFavoritos, 'eliminarHorarios', (store, idSeparador: IdSeparador) => {
+    store.set([...store.get().filter(horario => horario.separador !== idSeparador)])
+})
+
+export const eliminarHorario = action(horariosFavoritos, 'eliminarHorario', (store, idHorarioFavorito: IdHorarioFavorito) => {
+    store.set([...store.get().filter(horario => horario.id !== idHorarioFavorito)])
+})
+
+export const mostrarHorario = action(idHorarioFavoritoVisualizado, 'mostrarHorario', (store, idHorarioFavorito: IdHorarioFavorito) => {
+    store.set(idHorarioFavorito)
+})
+
+export const moverHorario = action(horariosFavoritos, 'moverHorario', (store, idHorarioFavorito: IdHorarioFavorito, idSeparadorDestino: IdSeparador) => {
     const nuevosHorariosFavoritos = store.get()
 
-    const [ horario ] = nuevosHorariosFavoritos[indexFavoritoOrigen].contenido.splice(indexHorario, 1)
-    nuevosHorariosFavoritos[indexFavoritoDestino].contenido.push(horario)
+    const indexHorarioFavorito = nuevosHorariosFavoritos.findIndex(horario => horario.id === idHorarioFavorito)
 
-    store.set([...nuevosHorariosFavoritos])
+    if (indexHorarioFavorito !== -1) {
+        nuevosHorariosFavoritos[indexHorarioFavorito].separador = idSeparadorDestino
+
+        store.set([...nuevosHorariosFavoritos])
+    }
 })

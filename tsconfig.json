@@ -2,6 +2,7 @@
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
     "jsx": "preserve",
+    "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
       "@Layouts": [ "src/layouts/index.astro" ],
