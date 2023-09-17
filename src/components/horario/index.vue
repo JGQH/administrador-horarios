@@ -1,5 +1,5 @@
 <template>
-    <div class="grid grid-cols-6 min-w-[640px]">
+    <div id="horario" class="grid grid-cols-6 min-w-[640px]">
         <!-- Cabecera -->
         <div class="text-center bg-white-dark dark:bg-black-light">
             <p class="font-bold">Horas</p>

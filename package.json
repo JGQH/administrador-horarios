@@ -17,6 +17,7 @@
     "@nanostores/persistent": "^0.9.1",
     "@nanostores/vue": "^0.10.0",
     "astro": "^3.0.7",
+    "html-to-image": "^1.11.11",
     "nanostores": "^0.9.3",
     "tailwindcss": "^3.3.3",
     "uuid": "^9.0.0",
