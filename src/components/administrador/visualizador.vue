@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-3 absolute inset-0">
+    <div id="visualizador" class="flex flex-col gap-3 w-full absolute inset-0">
         <template v-for="separador in $separadores" :key="separador.id">
             <Agregador v-if="separador.id === 'ids:0'" @click="agregarSeparador()">
                 Agregar separador

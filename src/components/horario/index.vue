@@ -8,7 +8,7 @@
             <p class="font-bold">{{ día }}</p>
         </div>
         <!-- Horas -->
-        <div v-for="n in 16" class="col-start-1 text-center text-xs md:text-sm">
+        <div v-for="n in 16" class="col-start-1 text-center text-xs lg:text-sm">
             <p>{{ horasInicio[n - 1] }} - {{ horasFinal[n - 1] }}</p>
         </div>
         <!-- Cuerpo -->

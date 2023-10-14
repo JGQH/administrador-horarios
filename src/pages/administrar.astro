@@ -4,12 +4,14 @@ import { H1, H2, VisualizadorAdministrador, HorarioAdministrador, MostradorAdmin
 ---
 <Principal título='Administrador'>
     <H1 class="text-center mb-3 md:mb-5">Administrador</H1>
-    <div class="w-full grid grid-cols-[1fr_2fr] grid-rows-[auto_1fr] gap-3">
-        <div class="relative row-span-2 h-full overflow-y-auto">
+    <div class="w-full grid lg:grid-cols-[1fr_2fr] grid-rows-[2fr_1fr_2fr] lg:grid-rows-[auto_1fr] gap-3">
+        <div class="relative max-lg:row-start-3 lg:row-span-2 overflow-y-auto">
             <VisualizadorAdministrador client:load />
         </div>
-        <HorarioAdministrador client:load />
-        <div class="col-start-2">
+		<div class="overflow-x-auto">
+            <HorarioAdministrador client:load />
+		</div>
+        <div class="lg:col-start-2">
             <H2>Cursos mostrados:</H2>
             <MostradorAdministrador client:load />
         </div>
